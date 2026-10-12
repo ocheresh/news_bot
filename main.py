@@ -15,9 +15,11 @@ from telegram_post import post_to_telegram
 
 DRY_RUN = os.environ.get("DRY_RUN") == "1"
 AI_PAUSE_SECONDS = 7  # пауза між запитами до безкоштовного Gemini
+MAX_RUNTIME_SECONDS = 8 * 60  # після цього нові запити до ШІ не починаємо
 
 
 def main() -> None:
+    started = time.time()
     seen = load_seen()
     seen_set = set(seen)
     recent = load_recent()
@@ -53,6 +55,9 @@ def main() -> None:
 
     for it in fresh:
         if ai_calls >= MAX_AI_CALLS or posted >= MAX_POSTS:
+            break
+        if time.time() - started > MAX_RUNTIME_SECONDS:
+            print("Ліміт часу запуску: решта новин дочекається наступного разу")
             break
         if per_source.get(it["source"], 0) >= MAX_PER_SOURCE:
             continue  # з цього джерела вже є пост; новина дочекається наступного запуску
