@@ -5,7 +5,7 @@ import os
 import requests
 
 # Модель можна змінити через змінну середовища, якщо Google оновить назви.
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite,gemini-3.6-flash")
 URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
 
 
