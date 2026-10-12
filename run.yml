@@ -1,0 +1,48 @@
+name: News bot
+
+on:
+  schedule:
+    # Кожні 2 години (час UTC). Для публічного репозиторію можна частіше: "*/30 * * * *"
+    - cron: "0 */2 * * *"
+  workflow_dispatch:   # кнопка ручного запуску у вкладці Actions
+
+permissions:
+  contents: write      # щоб бот міг зберегти seen.json і recent.json
+
+concurrency:
+  group: news-bot      # два запуски одночасно не стартують
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run bot
+        env:
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+        run: python main.py
+
+      - name: Save state (seen.json, recent.json)
+        run: |
+          git config user.name "news-bot"
+          git config user.email "news-bot@users.noreply.github.com"
+          git add seen.json recent.json
+          if ! git diff --cached --quiet; then
+            git commit -m "update state"
+            git push
+          fi
