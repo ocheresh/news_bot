@@ -1,47 +1,24 @@
-"""🧠 Розумник: питає Gemini, чи варто публікувати новину."""
-import json
+"""📣 Голосник: публікує пост через Telegram Bot API."""
+import html
 import os
 
 import requests
 
-# Модель можна змінити через змінну середовища, якщо Google оновить назви.
-MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
-URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
 
-
-def judge(item: dict, criteria: str) -> dict:
-    """Повертає {"publish": bool, "summary": str}. При помилці — publish=False."""
-    prompt = f"""{criteria}
-
-Оціни новину нижче.
-Відповідай ТІЛЬКИ JSON такого вигляду:
-{{"publish": true або false, "summary": "короткий переказ українською, 2-3 речення, своїми словами"}}
-Якщо publish=false, summary може бути порожнім.
-
-Джерело: {item['source']}
-Текст: {item['text'][:3000]}
-"""
-    body = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {
-            "responseMimeType": "application/json",
-            "temperature": 0.2,
+def post_to_telegram(summary: str, link: str, source: str) -> None:
+    text = (
+        f"{html.escape(summary)}\n\n"
+        f'🔗 <a href="{html.escape(link, quote=True)}">Джерело: {html.escape(source)}</a>'
+    )
+    token = os.environ["TELEGRAM_BOT_TOKEN"]
+    r = requests.post(
+        f"https://api.telegram.org/bot{token}/sendMessage",
+        json={
+            "chat_id": os.environ["TELEGRAM_CHANNEL_ID"],
+            "text": text,
+            "parse_mode": "HTML",
+            "disable_web_page_preview": False,
         },
-    }
-    try:
-        r = requests.post(
-            URL,
-            headers={"x-goog-api-key": os.environ["AI_API_KEY"]},
-            json=body,
-            timeout=60,
-        )
-        r.raise_for_status()
-        raw = r.json()["candidates"][0]["content"]["parts"][0]["text"]
-        data = json.loads(raw)
-        return {
-            "publish": bool(data.get("publish")),
-            "summary": str(data.get("summary", "")).strip(),
-        }
-    except Exception as err:
-        print(f"[!] Gemini: {err}")
-        return {"publish": False, "summary": "", "error": True}
+        timeout=30,
+    )
+    r.raise_for_status()
