@@ -10,6 +10,14 @@ RSS_FEEDS = [
 TG_CHANNELS = [
     "ssternenko",
     "yzheleznyak",
+    "DeepStateUA",
+    "OGoMono",
+    "zedigital",
+    "teleTKACH",
+    "ugoda_platform",
+    "resurgammmm",
+    "nab_ukraine",
+    
 ]
 
 # 🧠 Критерії для Розумника (ШІ). Підкрутіть під свій канал.
