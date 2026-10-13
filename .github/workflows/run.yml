@@ -3,7 +3,7 @@ name: News bot
 on:
   schedule:
     # Кожні 2 години (час UTC). Для публічного репозиторію можна частіше: "*/30 * * * *"
-    - cron: "0 */2 * * *"
+    - cron: "17 */2 * * *"
   workflow_dispatch:   # кнопка ручного запуску у вкладці Actions
 
 permissions:
