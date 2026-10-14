@@ -77,7 +77,7 @@ def main() -> None:
                 print(f"\n[DRY] {verdict['summary']}\n      {it['link']}\n")
             else:
                 try:
-                    post_to_telegram(verdict["summary"], it["link"], it["source"])
+                    post_to_telegram(verdict["summary"], it["link"], it["source"], it.get("image"))
                 except Exception as err:
                     print(f"[!] Telegram: {err}")
                     continue  # не вдалося опублікувати: спробуємо наступного разу
