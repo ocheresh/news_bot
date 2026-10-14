@@ -20,7 +20,6 @@ TG_CHANNELS = [
     "oleg_nivievskyi",
     "AntitrustDealsAndStateAidUkraine",
     "mpg_finance",
-    "cryptology_info_news",
     "MOF_ua"
     
 ]
