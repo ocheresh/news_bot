@@ -2,7 +2,7 @@
 
 # 🌐 Сайти (RSS). Замініть на свої 5-10 посилань.
 RSS_FEEDS = [
-    "https://epravda.com.ua",
+    "https://epravda.com.ua/rss/",
     # "https://another-site.ua/feed",
 ]
 
