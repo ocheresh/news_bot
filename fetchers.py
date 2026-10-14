@@ -18,8 +18,13 @@ def _clean(html: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def fetch_rss(url: str) -> list[dict]:
-    feed = feedparser.parse(url, request_headers=HEADERS)
+def fetch_rss(url: str) -> list:
+    r = requests.get(url, headers=HEADERS, timeout=20)
+    feed = feedparser.parse(r.content)
+    if not feed.entries:
+        print(f"  [!] {url}: HTTP {r.status_code}, "
+              f"тип {r.headers.get('content-type')}, записів немає "
+              f"({feed.get('bozo_exception')})")
     items = []
     for e in feed.entries:
         date = None
