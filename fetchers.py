@@ -62,16 +62,20 @@ def fetch_tg_public(channel: str) -> list[dict]:
     return items
 
 
-def fetch_all(rss_feeds: list[str], tg_channels: list[str]) -> list[dict]:
+def fetch_all(rss_feeds: list, tg_channels: list) -> list:
     all_items = []
     for url in rss_feeds:
         try:
-            all_items += fetch_rss(url)
+            got = fetch_rss(url)
+            print(f"  RSS {url}: {len(got)}")
+            all_items += got
         except Exception as err:  # один зламаний сайт не має валити весь запуск
             print(f"[!] RSS {url}: {err}")
     for ch in tg_channels:
         try:
-            all_items += fetch_tg_public(ch)
+            got = fetch_tg_public(ch)
+            print(f"  Telegram @{ch}: {len(got)}")
+            all_items += got
         except Exception as err:
             print(f"[!] Telegram @{ch}: {err}")
     return all_items
