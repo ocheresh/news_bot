@@ -2,7 +2,6 @@
 
 # 🌐 Сайти (RSS). Замініть на свої 5-10 посилань.
 RSS_FEEDS = [
-    "https://epravda.com.ua/rss/",
     # "https://another-site.ua/feed",
 ]
 
@@ -17,6 +16,12 @@ TG_CHANNELS = [
     "ugoda_platform",
     "resurgammmm",
     "nab_ukraine",
+    "epravda_publications"
+    "oleg_nivievskyi",
+    "AntitrustDealsAndStateAidUkraine",
+    "mpg_finance",
+    "cryptology_info_news",
+    "MOF_ua"
     
 ]
 
