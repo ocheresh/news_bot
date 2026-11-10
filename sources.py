@@ -9,18 +9,14 @@ RSS_FEEDS = [
 TG_CHANNELS = [
     "ssternenko",
     "yzheleznyak",
-    "DeepStateUA",
     "OGoMono",
-    "zedigital",
     "teleTKACH",
     "ugoda_platform",
     "resurgammmm",
     "nab_ukraine",
-    "epravda_publications"
-    "oleg_nivievskyi",
-    "AntitrustDealsAndStateAidUkraine",
     "mpg_finance",
-    "MOF_ua"
+    "MOF_ua",
+    "mineconomdevUA"
     
 ]
 
